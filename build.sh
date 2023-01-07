@@ -1,5 +1,5 @@
 #!/bin/sh
 
-docker build -t s00500/bedrock:latest .
+docker build --build-arg ARCH=amd64 --platform linux/amd64 -t s00500/bedrock:latest .
 docker push s00500/bedrock:latest
 
