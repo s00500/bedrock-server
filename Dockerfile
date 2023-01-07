@@ -1,13 +1,16 @@
 FROM ubuntu:18.04
-ARG BDS_Version=1.19.51.01
+ARG BDS_Version=1.16.201.02
 
-ENV VERSION=$BDS_Version
+#https://minecraft.azureedge.net/bin-linux/bedrock-server-1.19.51.01.zip
+
+
 
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y unzip curl libcurl4 libssl1.0.0 && \
     rm -rf /var/lib/apt/lists/*
 
+ENV VERSION=$BDS_Version
 # Download and extract the bedrock server
 RUN if [ "$VERSION" = "latest" ] ; then \
         LATEST_VERSION=$( \
@@ -20,8 +23,8 @@ RUN if [ "$VERSION" = "latest" ] ; then \
     fi && \
     curl https://minecraft.azureedge.net/bin-linux/bedrock-server-${VERSION}.zip --output bedrock-server.zip && \
     unzip bedrock-server.zip -d bedrock-server && \
-    rm bedrock-server.zip
-
+    rm bedrock-server.zip 
+    
 # Create a separate folder for configurations move the original files there and create links for the files
 RUN mkdir /bedrock-server/config && \
     mv /bedrock-server/server.properties /bedrock-server/config && \
