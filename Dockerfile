@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-ARG BDS_Version=1.19.51.01
+ARG BDS_Version=1.19.73.02
 
 #https://minecraft.azureedge.net/bin-linux/bedrock-server-1.19.51.01.zip
 
