@@ -1,27 +1,17 @@
-FROM ubuntu:18.04
+FROM ubuntu:24.04
 ARG BDS_Version=1.21.111.1
 
-#https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.111.1.zip
-
+#https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.111.1.zip
 
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y unzip curl libcurl4 libssl1.0.0 && \
+    apt-get install -y unzip wget libcurl4 libssl3 && \
     rm -rf /var/lib/apt/lists/*
 
 ENV VERSION=$BDS_Version
 # Download and extract the bedrock server
-RUN if [ "$VERSION" = "latest" ] ; then \
-        LATEST_VERSION=$( \
-            curl -v --silent  https://www.minecraft.net/en-us/download/server/bedrock/ 2>&1 | \
-            grep -o 'https://minecraft.azureedge.net/bin-linux/[^"]*' | \
-            sed 's#.*/bedrock-server-##' | sed 's/.zip//') && \
-        export VERSION=$LATEST_VERSION && \
-        echo "Setting VERSION to $LATEST_VERSION" ; \
-    else echo "Using VERSION of $VERSION"; \
-    fi && \
-    curl https://minecraft.azureedge.net/bin-linux/bedrock-server-${VERSION}.zip --output bedrock-server.zip && \
+RUN wget https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-${VERSION}.zip -O bedrock-server.zip && \
     unzip bedrock-server.zip -d bedrock-server && \
     rm bedrock-server.zip 
     
@@ -38,4 +28,4 @@ VOLUME /bedrock-server/worlds /bedrock-server/config
 
 WORKDIR /bedrock-server
 ENV LD_LIBRARY_PATH=.
-CMD ./bedrock_server
+CMD ["./bedrock_server"]
